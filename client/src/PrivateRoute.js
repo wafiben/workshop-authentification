@@ -1,11 +1,11 @@
 import React from 'react';
 import { Navigate } from 'react-router'; 
 const PrivateRoute = ({children,isAuth}) => {
-   
+    const token=localStorage.getItem("token");
     return (
         <div>
             {
-                isAuth ? children : <Navigate to="/sign-in"/>
+                token ? children : <Navigate to="/sign-in"/>
             }
         </div>
     )

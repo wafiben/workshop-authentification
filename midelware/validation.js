@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 const registrationValidation = [
-  body("username",'you must type your name ').isString(),
+  body("username",'you must type your name').isString(),
   body("email").isEmail(),
   body("password","the passsword must be 6 caracter at least").isLength({ min: 6 })
 ];

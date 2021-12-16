@@ -7,9 +7,9 @@ const isAuth=async(request,response,next)=>{
     if(!verifyToken) {
         return response.status(401).json({message:'you are authorized'})
     }
-    console.log(verifyToken)
-    request.userId=verifyToken.id
-    
+   
+    const user=await User.findById(verifyToken.id);
+    request.user=user 
     next();
     } catch (error) {
         console.log(error)

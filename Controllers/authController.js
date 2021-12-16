@@ -6,7 +6,7 @@ const registerController = async (request, response) => {
   try {
     const searchedUser = await User.findOne({ email: user.email });
     if (searchedUser) {
-      return response.status(400).json({ message: "user already exist" });
+      return response.status(400).json({ errors:[{msg:"user already exists"}] });
     }
     const hashedPasword = await bcrypt.hash(user.password, 10);
     const newUser = await new User({
@@ -21,7 +21,7 @@ const registerController = async (request, response) => {
     );
     response.status(200).json({ newUser, token });
   } catch (error) {
-    response.status(500).json({ message: "error server" });
+    response.status(500).json({ errors:[{msg:"error server"}] });
   }
 };
 const loginController = async (request, response) => {
@@ -31,12 +31,12 @@ const loginController = async (request, response) => {
     //search for user
     const searchedUser = await User.findOne({ email: user.email });
     if (!searchedUser) {
-      return response.status(401).json({ message: "you must register before" });
+      return response.status(401).json({ errors:[{msg:"you must register before"}] });
     }
     //compare the passwordl of the user request with the password saved on the databse (searchedUser)
     const result = await bcrypt.compare(user.password, searchedUser.password);
     if (!result) {
-      return response.status(400).json({ message: "wrong password try again" });
+      return response.status(400).json({ errors:[{msg:"your passwordl is wrong"}] });
     }
     if (result == true) {
       const token = await jwt.sign(
